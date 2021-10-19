@@ -19,10 +19,13 @@ import java.util.List;
 //@RequestMapping ("v1/cakes")
 public class CakeController {
     private final Cakes cakeList = new Cakes();
+    private static long idCounter = 0;
+
 
     public CakeController() {
         Cake cake1 = new Cake();
-        cake1.setId(1L);
+        cake1.setId(idCounter);
+        idCounter++;
         cake1.setName("Napoleon");
         cake1.setPrice(new BigDecimal(100));
         cake1.setWeight(new BigDecimal(100));
@@ -30,6 +33,7 @@ public class CakeController {
         cake1.setCalories(new BigDecimal(100));
         Cake cake2 = new Cake();
         cake2.setId(2L);
+        idCounter++;
         cake2.setName("Rose");
         cake2.setPrice(new BigDecimal(200));
         cake2.setWeight(new BigDecimal(200));
@@ -60,6 +64,8 @@ public class CakeController {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         else {
+            newCake.setId(idCounter);
+            idCounter++;
             cakeList.getCakeList().add(newCake);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }

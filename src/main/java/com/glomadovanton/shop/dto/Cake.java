@@ -44,7 +44,7 @@ public class Cake {
     private BigDecimal weight;
 
     public boolean isFull(){
-        return weight != null && id != null && name != null && price != null && calories != null && image != null;
+        return weight != null && name != null && price != null && calories != null && image != null;
     }
 
 }
