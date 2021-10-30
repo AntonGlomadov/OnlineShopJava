@@ -1,4 +1,4 @@
-package com.glomadovanton.shop.dto;
+package com.glomadovanton.shop.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 
 @Data
@@ -13,8 +14,8 @@ import java.math.BigDecimal;
 @Validated
 public class Cake {
 
-    @NotNull
-    @Schema(description = "id", required = true)
+    @Null
+    @Schema(description = "id", required = false)
     @JsonProperty("id")
     private Long id;
 
@@ -42,9 +43,5 @@ public class Cake {
     @Schema(description = "Cake weight", required = true)
     @JsonProperty("weight")
     private BigDecimal weight;
-
-    public boolean isFull(){
-        return weight != null && name != null && price != null && calories != null && image != null;
-    }
 
 }
