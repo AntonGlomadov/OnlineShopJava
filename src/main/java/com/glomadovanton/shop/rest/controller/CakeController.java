@@ -2,6 +2,7 @@ package com.glomadovanton.shop.rest.controller;
 
 import com.glomadovanton.shop.goods.CakesServiceImpl;
 import com.glomadovanton.shop.rest.dto.Cake;
+import com.glomadovanton.shop.rest.dto.CakeFullInf;
 import com.glomadovanton.shop.rest.dto.Cakes;
 import com.glomadovanton.shop.exception.CakeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +61,8 @@ public class CakeController {
     }
 
     @GetMapping(value = "cake/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cake getCakeById(@PathVariable Long id) {
-        return cakeList.getCakeList().stream()
-                .filter(c -> c.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new CakeNotFoundException("No such cake"));
+    public CakeFullInf getCakeById(@PathVariable Long id) {
+        return cakesService.getCake(id);
     }
 
     @PostMapping(path = "cakes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

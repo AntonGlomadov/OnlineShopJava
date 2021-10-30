@@ -29,6 +29,10 @@ class CakeEntity {
 
     private BigDecimal weight;
 
+    private String compositions;
+
+    private String storageConditions;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
