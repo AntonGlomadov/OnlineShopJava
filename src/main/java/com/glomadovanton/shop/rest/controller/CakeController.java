@@ -1,5 +1,6 @@
 package com.glomadovanton.shop.rest.controller;
 
+import com.glomadovanton.shop.goods.CakesService;
 import com.glomadovanton.shop.goods.CakesServiceImpl;
 import com.glomadovanton.shop.rest.dto.Cake;
 import com.glomadovanton.shop.rest.dto.CakeFullInf;
@@ -22,10 +23,10 @@ import java.util.List;
 public class CakeController {
     private final Cakes cakeList = new Cakes();
     private static long idCounter = 0;
-    private final CakesServiceImpl cakesService;
+    private final CakesService cakesService;
 
     @Autowired
-    public CakeController(CakesServiceImpl cakesService) {
+    public CakeController(CakesService cakesService) {
         List<Cake> tmp = new ArrayList<Cake>();
         cakeList.setCakeList(tmp);
         this.cakesService = cakesService;
