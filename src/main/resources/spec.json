@@ -11,6 +11,46 @@
     }
   ],
   "paths": {
+    "/addCake": {
+      "post": {
+        "tags": [
+          "cake-controller"
+        ],
+        "operationId": "createCake",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CakeFullInf"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cake"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/cakes": {
       "get": {
         "tags": [
@@ -34,44 +74,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Cakes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "cake-controller"
-        ],
-        "operationId": "createCake",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Cake"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Cake"
                 }
               }
             }
@@ -112,7 +114,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cake"
+                  "$ref": "#/components/schemas/CakeFullInf"
                 }
               }
             }
@@ -123,10 +125,57 @@
   },
   "components": {
     "schemas": {
+      "CakeFullInf": {
+        "required": [
+          "calories",
+          "compositions",
+          "image",
+          "name",
+          "price",
+          "storageConditions",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "id",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name"
+          },
+          "calories": {
+            "type": "number",
+            "description": "Calories of cake"
+          },
+          "image": {
+            "type": "string",
+            "description": "Relative url of cake image"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price of cake"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Cake weight"
+          },
+          "compositions": {
+            "type": "string",
+            "description": "Cake compositions"
+          },
+          "storageConditions": {
+            "type": "string",
+            "description": "Cake storage conditions"
+          }
+        },
+        "description": "Full info about cakes"
+      },
       "Cake": {
         "required": [
           "calories",
-          "id",
           "image",
           "name",
           "price",
@@ -134,9 +183,6 @@
         ],
         "type": "object",
         "properties": {
-          "full": {
-            "type": "boolean"
-          },
           "id": {
             "type": "integer",
             "description": "id",
