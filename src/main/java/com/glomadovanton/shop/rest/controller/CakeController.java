@@ -1,7 +1,9 @@
 package com.glomadovanton.shop.rest.controller;
 
+import com.glomadovanton.shop.goods.CakesService;
 import com.glomadovanton.shop.goods.CakesServiceImpl;
 import com.glomadovanton.shop.rest.dto.Cake;
+import com.glomadovanton.shop.rest.dto.CakeFullInf;
 import com.glomadovanton.shop.rest.dto.Cakes;
 import com.glomadovanton.shop.exception.CakeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,10 @@ import java.util.List;
 public class CakeController {
     private final Cakes cakeList = new Cakes();
     private static long idCounter = 0;
-    private final CakesServiceImpl cakesService;
+    private final CakesService cakesService;
 
     @Autowired
-    public CakeController(CakesServiceImpl cakesService) {
+    public CakeController(CakesService cakesService) {
         List<Cake> tmp = new ArrayList<Cake>();
         cakeList.setCakeList(tmp);
         this.cakesService = cakesService;
@@ -60,11 +62,8 @@ public class CakeController {
     }
 
     @GetMapping(value = "cake/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cake getCakeById(@PathVariable Long id) {
-        return cakeList.getCakeList().stream()
-                .filter(c -> c.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new CakeNotFoundException("No such cake"));
+    public CakeFullInf getCakeById(@PathVariable Long id) {
+        return cakesService.getCake(id);
     }
 
     @PostMapping(path = "cakes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -9,11 +9,11 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @ToString
 @RequiredArgsConstructor
 @Table(name = "CAKE")
-class CakeEntity {
+public class CakeEntity {
 
     @Setter(AccessLevel.NONE)
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
@@ -28,6 +28,10 @@ class CakeEntity {
     private BigDecimal price;
 
     private BigDecimal weight;
+
+    private String compositions;
+
+    private String storageConditions;
 
     @Override
     public boolean equals(Object o) {
