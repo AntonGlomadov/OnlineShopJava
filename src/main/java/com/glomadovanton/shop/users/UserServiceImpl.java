@@ -17,7 +17,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) {
-        List<UserEntity> userEntityList = userRepository.findAll();
+    public UserEntity addUser(User user) {
+        if (!userRepository.existsByNumber(user.getNumber())){
+            UserEntity userEntity = new UserEntity();
+            userEntity.setNumber(user.getNumber());
+            userEntity.setName(user.getName());
+            userRepository.saveAndFlush(userEntity);
+        }
+        return userRepository.findUserEntityByNumber(user.getNumber());
     }
 }

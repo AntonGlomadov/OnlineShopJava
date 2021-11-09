@@ -11,10 +11,50 @@
     }
   ],
   "paths": {
+    "/addOrder": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "createOrder",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderFullInf"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderFullInf"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/addCake": {
       "post": {
         "tags": [
-          "cake-controller"
+          "user-controller"
         ],
         "operationId": "createCake",
         "requestBody": {
@@ -54,7 +94,7 @@
     "/cakes": {
       "get": {
         "tags": [
-          "cake-controller"
+          "user-controller"
         ],
         "operationId": "cakes",
         "responses": {
@@ -84,7 +124,7 @@
     "/cake/{id}": {
       "get": {
         "tags": [
-          "cake-controller"
+          "user-controller"
         ],
         "operationId": "getCakeById",
         "parameters": [
@@ -125,6 +165,137 @@
   },
   "components": {
     "schemas": {
+      "Order": {
+        "required": [
+          "delivery",
+          "delivery time",
+          "deliveryAddress",
+          "orderStatus",
+          "payment",
+          "userID"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "id",
+            "format": "int64"
+          },
+          "userID": {
+            "type": "integer",
+            "description": "userID",
+            "format": "int64"
+          },
+          "delivery": {
+            "type": "string",
+            "description": "delivery need",
+            "enum": [
+              "NEED",
+              "NO"
+            ]
+          },
+          "orderStatus": {
+            "type": "string",
+            "description": "order status",
+            "enum": [
+              "NEW",
+              "CANCELED",
+              "PERFORMED",
+              "FINISHED"
+            ]
+          },
+          "payment": {
+            "type": "string",
+            "description": "payment status",
+            "enum": [
+              "ONLINE",
+              "MONEY"
+            ]
+          },
+          "deliveryAddress": {
+            "type": "string",
+            "description": "delivery address"
+          },
+          "delivery time": {
+            "type": "string",
+            "description": "delivery time",
+            "format": "date-time"
+          }
+        },
+        "description": "Info about purchase"
+      },
+      "OrderFullInf": {
+        "required": [
+          "order",
+          "purchases",
+          "user"
+        ],
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "order": {
+            "$ref": "#/components/schemas/Order"
+          },
+          "purchases": {
+            "type": "array",
+            "description": "purchases",
+            "items": {
+              "$ref": "#/components/schemas/Purchase"
+            }
+          }
+        },
+        "description": "Full request for adding order"
+      },
+      "Purchase": {
+        "required": [
+          "cakeId",
+          "number"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "id",
+            "format": "int64"
+          },
+          "cakeId": {
+            "type": "integer",
+            "description": "cakeId",
+            "format": "int64"
+          },
+          "number": {
+            "type": "integer",
+            "description": "number",
+            "format": "int32"
+          }
+        },
+        "description": "Info about order"
+      },
+      "User": {
+        "required": [
+          "name",
+          "number"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "id",
+            "format": "int64"
+          },
+          "number": {
+            "type": "string",
+            "description": "number"
+          },
+          "name": {
+            "type": "string",
+            "description": "name"
+          }
+        },
+        "description": "Info about user"
+      },
       "CakeFullInf": {
         "required": [
           "calories",

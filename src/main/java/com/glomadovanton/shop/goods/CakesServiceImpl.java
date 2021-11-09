@@ -57,6 +57,11 @@ public class CakesServiceImpl implements CakesService {
     }
 
     @Override
+    public CakeEntity getCakeEntity(Long id) {
+        return cakeRepository.findById(id).get();
+    }
+
+    @Override
     public void addCake(CakeFullInf cake){
         CakeEntity cakeEntity = new CakeEntity();
         cakeEntity.setCalories(cake.getCalories());
