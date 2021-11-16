@@ -1,4 +1,4 @@
-package com.glomadovanton.shop.rest.dto.orderRequest;
+package com.glomadovanton.shop.rest.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,14 +9,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 @Data
-@Schema(description = "Info about user")
+@Schema(description = "Info about purchase")
 @Validated
 public class User {
-
-    @Null
-    @Schema(description = "id", required = false)
-    @JsonProperty("id")
-    private Long id;
 
     @NotNull
     @Schema(description = "number", required = true)

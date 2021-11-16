@@ -1,14 +1,12 @@
 package com.glomadovanton.shop.users;
 
-import com.glomadovanton.shop.rest.dto.orderRequest.User;
+import com.glomadovanton.shop.exception.UserExistException;
+import com.glomadovanton.shop.rest.dto.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class UserServiceImpl implements UserService {
-
+public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
     @Autowired
@@ -17,13 +15,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity addUser(User user) {
-        if (!userRepository.existsByNumber(user.getNumber())){
-            UserEntity userEntity = new UserEntity();
-            userEntity.setNumber(user.getNumber());
-            userEntity.setName(user.getName());
-            userRepository.saveAndFlush(userEntity);
+    public void addUser(User user) throws UserExistException {
+        if(userRepository.existsByNumber(user.getNumber())) {
+            throw new UserExistException("");
         }
-        return userRepository.findUserEntityByNumber(user.getNumber());
+        UserEntity userEntity = new UserEntity();
+        userEntity.setName(user.getName());
+        userEntity.setNumber(user.getNumber());
+        userRepository.saveAndFlush(userEntity);
+    }
+
+    @Override
+    public Long getUserId(String number) {
+        return userRepository.findUserEntityByNumber(number).getId();
     }
 }

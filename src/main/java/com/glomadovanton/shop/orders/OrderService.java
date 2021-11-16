@@ -5,5 +5,5 @@ import com.glomadovanton.shop.users.UserEntity;
 
 public interface OrderService {
 
-    OrderEntity addOrder(Order order,UserEntity user);
+     void addOrder(Order order);
 }

@@ -1,9 +1,9 @@
 package com.glomadovanton.shop.users;
 
-import com.glomadovanton.shop.rest.dto.orderRequest.User;
+import com.glomadovanton.shop.exception.UserExistException;
+import com.glomadovanton.shop.rest.dto.user.User;
 
 public interface UserService {
-
-    UserEntity  addUser(User user);
-
+   void addUser(User user) throws UserExistException;
+   Long getUserId(String number);
 }

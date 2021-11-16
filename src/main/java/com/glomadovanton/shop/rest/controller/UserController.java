@@ -1,16 +1,13 @@
 package com.glomadovanton.shop.rest.controller;
 
+import com.glomadovanton.shop.exception.UserExistException;
 import com.glomadovanton.shop.goods.CakesService;
-import com.glomadovanton.shop.orders.OrderEntity;
 import com.glomadovanton.shop.orders.OrderService;
-import com.glomadovanton.shop.orders.PurchaseEntity;
 import com.glomadovanton.shop.orders.PurchaseService;
 import com.glomadovanton.shop.rest.dto.cake.Cake;
 import com.glomadovanton.shop.rest.dto.cake.CakeFullInf;
 import com.glomadovanton.shop.rest.dto.cake.Cakes;
-import com.glomadovanton.shop.rest.dto.orderRequest.OrderFullInf;
-import com.glomadovanton.shop.rest.dto.orderRequest.Purchase;
-import com.glomadovanton.shop.users.UserEntity;
+import com.glomadovanton.shop.rest.dto.orderRequest.Order;
 import com.glomadovanton.shop.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,13 +52,14 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(path = "addOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderFullInf> createOrder(@RequestBody @Valid OrderFullInf newOrder) {
-        UserEntity userEntity = userService.addUser(newOrder.getUser());
-        OrderEntity orderEntity = orderService.addOrder(newOrder.getOrder(),userEntity);
-        for (Purchase purchase :newOrder.getPurchases()){
-            purchaseService.addPurchase(orderEntity,cakesService.getCakeEntity(purchase.getCakeId()),purchase.getNumber());
+    public void createOrder(@RequestBody @Valid Order newOrder) {
+        try {
+            userService.addUser(newOrder.getUser());
         }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        catch (UserExistException ignored){
+        }
+        orderService.addOrder(newOrder);
     }
 }
