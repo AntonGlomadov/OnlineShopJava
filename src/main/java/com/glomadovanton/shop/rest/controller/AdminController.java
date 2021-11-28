@@ -21,7 +21,7 @@ public class AdminController {
     @GetMapping(value = "/orders")
     public String getOrders(Model model){
         Orders orders = orderService.getOrders();
-        model.addAttribute("greeting", orders);
+        model.addAttribute("orders", orders);
         return "orders";
     }
 }
