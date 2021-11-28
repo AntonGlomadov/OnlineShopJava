@@ -2,12 +2,17 @@ package com.glomadovanton.shop.orders;
 
 import com.glomadovanton.shop.goods.CakeRepository;
 import com.glomadovanton.shop.rest.dto.orderRequest.Order;
+import com.glomadovanton.shop.rest.dto.orderRequest.Orders;
+import com.glomadovanton.shop.rest.dto.orderRequest.Purchase;
+import com.glomadovanton.shop.rest.dto.user.User;
+import com.glomadovanton.shop.users.UserEntity;
 import com.glomadovanton.shop.users.UserRepository;
 import com.glomadovanton.shop.users.UserService;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -48,5 +53,41 @@ public class OrderServiceImpl implements OrderService{
                 }).collect(Collectors.toList()));
         orderEntity.setUser(userRepository.findUserEntityByNumber(order.getUser().getNumber()));
         orderRepository.saveAndFlush(orderEntity);
+    }
+
+    @Override
+    public Orders getOrders() {
+        List<OrderEntity> orderEntities = orderRepository.findAll();
+        List<Order> orderList = orderEntities.stream().map(or -> {
+            Order order = new Order();
+
+            User user = new User();
+            UserEntity userEntity = or.getUser();
+            user.setName(userEntity.getName());
+            user.setNumber(userEntity.getNumber());
+            order.setUser(user);
+
+            order.setDelivery(or.getDelivery());
+            order.setDeliveryAddress(or.getDeliveryAddress());
+            order.setDeliveryTime(or.getDeliveryTime());
+
+            order.setPayment(order.getPayment());
+
+            order.setOrderStatus(or.getStatus());
+
+            List<PurchaseEntity> purchaseEntityList= or.getPurchases();
+            List<Purchase> purchases = purchaseEntityList.stream().map(pu->{
+                Purchase purchase = new Purchase();
+                purchase.setId(pu.getId());
+                purchase.setNumber(pu.getNumber());
+                return purchase;
+            }).collect(Collectors.toList());
+
+            order.setPurchases(purchases);
+            return order;
+        }).collect(Collectors.toList());
+        Orders orders = new Orders();
+        orders.setOrderList(orderList);
+        return orders;
     }
 }

@@ -1,12 +1,10 @@
 package com.glomadovanton.shop.orders;
 
 import com.glomadovanton.shop.goods.CakeEntity;
-import com.glomadovanton.shop.rest.dto.orderRequest.Order;
-import com.glomadovanton.shop.rest.dto.orderRequest.Purchase;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService{

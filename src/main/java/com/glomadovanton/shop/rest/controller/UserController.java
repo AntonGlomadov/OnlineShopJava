@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 
 @RestController
@@ -38,6 +39,7 @@ public class UserController {
 
     @GetMapping(value = "cakes", produces = MediaType.APPLICATION_JSON_VALUE)
     public Cakes cakes() {
+
         return cakesService.getCakes();
     }
 

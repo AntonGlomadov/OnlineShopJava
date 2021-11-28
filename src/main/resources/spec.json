@@ -21,7 +21,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderFullInf"
+                "$ref": "#/components/schemas/Order"
               }
             }
           },
@@ -38,15 +38,8 @@
               }
             }
           },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderFullInf"
-                }
-              }
-            }
+          "201": {
+            "description": "Created"
           }
         }
       }
@@ -172,19 +165,13 @@
           "deliveryAddress",
           "orderStatus",
           "payment",
-          "userID"
+          "purchases",
+          "user"
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "description": "id",
-            "format": "int64"
-          },
-          "userID": {
-            "type": "integer",
-            "description": "userID",
-            "format": "int64"
+          "user": {
+            "$ref": "#/components/schemas/User"
           },
           "delivery": {
             "type": "string",
@@ -192,6 +179,23 @@
             "enum": [
               "NEED",
               "NO"
+            ]
+          },
+          "deliveryAddress": {
+            "type": "string",
+            "description": "delivery address"
+          },
+          "delivery time": {
+            "type": "string",
+            "description": "delivery time",
+            "format": "date-time"
+          },
+          "payment": {
+            "type": "string",
+            "description": "payment status",
+            "enum": [
+              "ONLINE",
+              "MONEY"
             ]
           },
           "orderStatus": {
@@ -204,40 +208,6 @@
               "FINISHED"
             ]
           },
-          "payment": {
-            "type": "string",
-            "description": "payment status",
-            "enum": [
-              "ONLINE",
-              "MONEY"
-            ]
-          },
-          "deliveryAddress": {
-            "type": "string",
-            "description": "delivery address"
-          },
-          "delivery time": {
-            "type": "string",
-            "description": "delivery time",
-            "format": "date-time"
-          }
-        },
-        "description": "Info about purchase"
-      },
-      "OrderFullInf": {
-        "required": [
-          "order",
-          "purchases",
-          "user"
-        ],
-        "type": "object",
-        "properties": {
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "order": {
-            "$ref": "#/components/schemas/Order"
-          },
           "purchases": {
             "type": "array",
             "description": "purchases",
@@ -246,32 +216,25 @@
             }
           }
         },
-        "description": "Full request for adding order"
+        "description": "Info about order"
       },
       "Purchase": {
         "required": [
-          "cakeId",
+          "id",
           "number"
         ],
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
-            "description": "id",
-            "format": "int64"
-          },
-          "cakeId": {
-            "type": "integer",
-            "description": "cakeId",
             "format": "int64"
           },
           "number": {
             "type": "integer",
-            "description": "number",
             "format": "int32"
           }
         },
-        "description": "Info about order"
+        "description": "purchases"
       },
       "User": {
         "required": [
@@ -280,11 +243,6 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "description": "id",
-            "format": "int64"
-          },
           "number": {
             "type": "string",
             "description": "number"
@@ -294,7 +252,7 @@
             "description": "name"
           }
         },
-        "description": "Info about user"
+        "description": "Info about purchase"
       },
       "CakeFullInf": {
         "required": [
