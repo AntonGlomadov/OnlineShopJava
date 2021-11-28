@@ -4,16 +4,31 @@
     <title>Getting Started: Handling Form Submission</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
+
 <body>
-<h2>Counts List</h2>
-<table class="table table-striped">
+<form>
+    <p><input type="submit" value="Submit" />
+<table class="table table-striped" border="1" cellpadding="0" cellspacing="0" width="650" height="18">
     <tr>
-        <th>Id</th>
         <th>Name</th>
+        <th>Number</th>
+        <th>Delivery</th>
+        <th>Delivery Address</th>
+        <th>Delivery Time</th>
+        <th>Payment</th>
+        <th>orderStatus</th>
+
+
     </tr>
     <tr th:each="order : ${orders}">
-        <td th:text="${greeting.delivery}"></td>
+        <td th:text="${order.name}"></td>
+        <td th:text="${order.number}"></td>
+        <td th:text="${order.delivery}"></td>
+        <td th:text="${order.deliveryAddress}"></td>
+        <td th:text="${order.deliveryTime}"></td>
+        <td th:text="${order.payment}"></td>
     </tr>
 </table>
+</form>
 </body>
 </html>

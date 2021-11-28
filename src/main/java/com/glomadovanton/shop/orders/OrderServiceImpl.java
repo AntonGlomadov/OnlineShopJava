@@ -2,6 +2,7 @@ package com.glomadovanton.shop.orders;
 
 import com.glomadovanton.shop.goods.CakeRepository;
 import com.glomadovanton.shop.rest.dto.orderRequest.Order;
+import com.glomadovanton.shop.rest.dto.orderRequest.OrderUi;
 import com.glomadovanton.shop.rest.dto.orderRequest.Orders;
 import com.glomadovanton.shop.rest.dto.orderRequest.Purchase;
 import com.glomadovanton.shop.rest.dto.user.User;
@@ -56,20 +57,18 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Orders getOrders() {
+    public List<OrderUi> getOrders() {
         List<OrderEntity> orderEntities = orderRepository.findAll();
-        List<Order> orderList = orderEntities.stream().map(or -> {
-            Order order = new Order();
-
-            User user = new User();
-            UserEntity userEntity = or.getUser();
-            user.setName(userEntity.getName());
-            user.setNumber(userEntity.getNumber());
-            order.setUser(user);
-
+        List<OrderUi> orderList = orderEntities.stream().map(or -> {
+            OrderUi order = new OrderUi();
+            order.setName(or.getUser().getName());
+            order.setNumber(or.getUser().getNumber());
             order.setDelivery(or.getDelivery());
             order.setDeliveryAddress(or.getDeliveryAddress());
             order.setDeliveryTime(or.getDeliveryTime());
+            order.setPayment(or.getPayment());
+            order.setOrderStatus(or.getStatus());
+            /*order.setDeliveryTime(or.getDeliveryTime());
 
             order.setPayment(order.getPayment());
 
@@ -83,11 +82,9 @@ public class OrderServiceImpl implements OrderService{
                 return purchase;
             }).collect(Collectors.toList());
 
-            order.setPurchases(purchases);
+            order.setPurchases(purchases);*/
             return order;
         }).collect(Collectors.toList());
-        Orders orders = new Orders();
-        orders.setOrderList(orderList);
-        return orders;
+        return orderList;
     }
 }
