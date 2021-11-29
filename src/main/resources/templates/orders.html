@@ -6,15 +6,11 @@
 </head>
 
 <body>
-<form>
-    <p><input type="submit" value="Submit" />
 <table class="table table-striped" border="1" cellpadding="0" cellspacing="0" width="650" height="18">
     <tr>
         <th>Name</th>
         <th>Number</th>
         <th>Delivery</th>
-        <th>Delivery Address</th>
-        <th>Delivery Time</th>
         <th>Payment</th>
         <th>orderStatus</th>
 
@@ -24,11 +20,12 @@
         <td th:text="${order.name}"></td>
         <td th:text="${order.number}"></td>
         <td th:text="${order.delivery}"></td>
-        <td th:text="${order.deliveryAddress}"></td>
-        <td th:text="${order.deliveryTime}"></td>
         <td th:text="${order.payment}"></td>
+        <td th:text="${order.orderStatus}"></td>
+        <td>
+            <a th:href="@{/admin/order/{id}(id=${order.id})}" class="btn btn-primary">More info</a>
+        </td>
     </tr>
 </table>
-</form>
 </body>
 </html>

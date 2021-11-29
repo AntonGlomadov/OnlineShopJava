@@ -1,19 +1,19 @@
 package com.glomadovanton.shop.rest.controller;
 
+import com.glomadovanton.shop.orders.Delivery;
 import com.glomadovanton.shop.orders.OrderService;
-import com.glomadovanton.shop.rest.dto.orderRequest.OrderUi;
-import com.glomadovanton.shop.rest.dto.orderRequest.Orders;
+import com.glomadovanton.shop.rest.dto.cake.CakeFullInf;
+import com.glomadovanton.shop.rest.dto.orderRequest.OrderFullInfo;
 import com.glomadovanton.shop.rest.dto.test.Greeting;
 import org.springframework.http.MediaType;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/admin")
+
 public class AdminController {
+
     private final OrderService orderService;
 
     public AdminController(OrderService orderService) {
@@ -26,4 +26,12 @@ public class AdminController {
         maw.addObject("orders", orderService.getOrders());
         return maw;
     }
+
+    @GetMapping(value = "/order/{id}")
+    public ModelAndView getOrder(@PathVariable Long id){
+        ModelAndView maw = new ModelAndView("order");
+        maw.addObject("order", orderService.getOrder(id));
+        return maw;
+    }
+
 }

@@ -1,24 +1,25 @@
 package com.glomadovanton.shop.orders;
 
+import com.glomadovanton.shop.exception.CakeNotFoundException;
+import com.glomadovanton.shop.exception.OrderNotFoundException;
 import com.glomadovanton.shop.goods.CakeRepository;
+import com.glomadovanton.shop.rest.dto.cake.CakeInOrderInfo;
 import com.glomadovanton.shop.rest.dto.orderRequest.Order;
-import com.glomadovanton.shop.rest.dto.orderRequest.OrderUi;
-import com.glomadovanton.shop.rest.dto.orderRequest.Orders;
-import com.glomadovanton.shop.rest.dto.orderRequest.Purchase;
-import com.glomadovanton.shop.rest.dto.user.User;
-import com.glomadovanton.shop.users.UserEntity;
+import com.glomadovanton.shop.rest.dto.orderRequest.OrderFullInfo;
+import com.glomadovanton.shop.rest.dto.orderRequest.OrdersInfoUI;
 import com.glomadovanton.shop.users.UserRepository;
 import com.glomadovanton.shop.users.UserService;
-import org.hibernate.ObjectNotFoundException;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final PurchaseRepository purchaseRepository;
     private final UserRepository userRepository;
@@ -57,34 +58,54 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<OrderUi> getOrders() {
+    public List<OrdersInfoUI> getOrders() {
         List<OrderEntity> orderEntities = orderRepository.findAll();
-        List<OrderUi> orderList = orderEntities.stream().map(or -> {
-            OrderUi order = new OrderUi();
+        return orderEntities.stream().map(or -> {
+            OrdersInfoUI order = new OrdersInfoUI();
+            order.setId(or.getId());
             order.setName(or.getUser().getName());
             order.setNumber(or.getUser().getNumber());
             order.setDelivery(or.getDelivery());
-            order.setDeliveryAddress(or.getDeliveryAddress());
-            order.setDeliveryTime(or.getDeliveryTime());
             order.setPayment(or.getPayment());
             order.setOrderStatus(or.getStatus());
-            /*order.setDeliveryTime(or.getDeliveryTime());
-
-            order.setPayment(order.getPayment());
-
-            order.setOrderStatus(or.getStatus());
-
-            List<PurchaseEntity> purchaseEntityList= or.getPurchases();
-            List<Purchase> purchases = purchaseEntityList.stream().map(pu->{
-                Purchase purchase = new Purchase();
-                purchase.setId(pu.getId());
-                purchase.setNumber(pu.getNumber());
-                return purchase;
-            }).collect(Collectors.toList());
-
-            order.setPurchases(purchases);*/
             return order;
         }).collect(Collectors.toList());
-        return orderList;
+    }
+
+    @Override
+    public OrderFullInfo getOrder(Long id) {
+        return orderRepository.findById(id)
+                .map(orderEntity -> {
+                    OrderFullInfo order = new OrderFullInfo();
+                    order.setOrderStatus(orderEntity.getStatus());
+                    order.setName(orderEntity.getUser().getName());
+                    order.setNumber(orderEntity.getUser().getNumber());
+                    order.setDelivery(orderEntity.getDelivery());
+                    order.setDeliveryAddress(orderEntity.getDeliveryAddress());
+                    order.setDeliveryTime(orderEntity.getDeliveryTime());
+
+                    AtomicReference<BigDecimal> paymentSum = new AtomicReference<>(BigDecimal.ZERO);
+
+                    List<Pair<CakeInOrderInfo, Integer>> pairList = orderEntity.getPurchases().stream().map(purchase -> {
+                                CakeInOrderInfo cakeInOrderInfo = cakeRepository.findById(purchase.getCake().getId()).map(
+                                        cakeEntity -> {
+                                            CakeInOrderInfo cake = new CakeInOrderInfo();
+                                            cake.setName(cakeEntity.getName());
+                                            cake.setPrice(cakeEntity.getPrice());
+                                            return cake;
+                                        }
+                                ).orElse(new CakeInOrderInfo());
+                                paymentSum.updateAndGet(v -> v.add(cakeInOrderInfo.getPrice().multiply(BigDecimal.valueOf(purchase.getNumber()))));
+                                return new Pair<CakeInOrderInfo, Integer>(cakeInOrderInfo, purchase.getNumber());
+                            }
+                    ).collect(Collectors.toList());
+
+                    order.setCakesList(pairList);
+                    order.setPaymentSum(paymentSum.get());
+                    order.setPayment(orderEntity.getPayment());
+                    return order;
+                })
+                .orElseThrow(() -> new OrderNotFoundException("No such order"));
+
     }
 }
