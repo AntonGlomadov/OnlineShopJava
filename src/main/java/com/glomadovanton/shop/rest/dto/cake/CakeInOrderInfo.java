@@ -8,4 +8,5 @@ import java.math.BigDecimal;
 public class CakeInOrderInfo {
     private String name;
     private BigDecimal price;
+    private Integer number;
 }

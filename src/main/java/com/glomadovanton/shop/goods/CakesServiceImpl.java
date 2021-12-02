@@ -73,4 +73,9 @@ public class CakesServiceImpl implements CakesService {
         cakeEntity.setStorageConditions(cake.getStorageConditions());
         cakeRepository.save(cakeEntity);
     }
+
+    @Override
+    public void deleteCake(Long id) {
+        cakeRepository.deleteById(id);
+    }
 }

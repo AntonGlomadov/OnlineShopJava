@@ -78,6 +78,7 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderEntity -> {
                     OrderFullInfo order = new OrderFullInfo();
                     order.setOrderStatus(orderEntity.getStatus());
+                    order.setId(orderEntity.getId());
                     order.setName(orderEntity.getUser().getName());
                     order.setNumber(orderEntity.getUser().getNumber());
                     order.setDelivery(orderEntity.getDelivery());
@@ -86,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
 
                     AtomicReference<BigDecimal> paymentSum = new AtomicReference<>(BigDecimal.ZERO);
 
-                    List<Pair<CakeInOrderInfo, Integer>> pairList = orderEntity.getPurchases().stream().map(purchase -> {
+                    List<CakeInOrderInfo> pairList = orderEntity.getPurchases().stream().map(purchase -> {
                                 CakeInOrderInfo cakeInOrderInfo = cakeRepository.findById(purchase.getCake().getId()).map(
                                         cakeEntity -> {
                                             CakeInOrderInfo cake = new CakeInOrderInfo();
@@ -95,10 +96,12 @@ public class OrderServiceImpl implements OrderService {
                                             return cake;
                                         }
                                 ).orElse(new CakeInOrderInfo());
+                                cakeInOrderInfo.setNumber(purchase.getNumber());
                                 paymentSum.updateAndGet(v -> v.add(cakeInOrderInfo.getPrice().multiply(BigDecimal.valueOf(purchase.getNumber()))));
-                                return new Pair<CakeInOrderInfo, Integer>(cakeInOrderInfo, purchase.getNumber());
+                                return cakeInOrderInfo;
                             }
                     ).collect(Collectors.toList());
+
 
                     order.setCakesList(pairList);
                     order.setPaymentSum(paymentSum.get());
@@ -107,5 +110,15 @@ public class OrderServiceImpl implements OrderService {
                 })
                 .orElseThrow(() -> new OrderNotFoundException("No such order"));
 
+    }
+
+    @Override
+    public void changeOrderStatus(Long id, OrderStatus status) {
+        orderRepository.updateStatus(id,status);
+    }
+
+    @Override
+    public void deleteOrder(Long id) {
+        orderRepository.deleteById(id);
     }
 }

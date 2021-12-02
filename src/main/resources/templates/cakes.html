@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<form action="#" th:action="@{/admin/order/edit}"  method="get">
+    <input type="submit" value="Edit cake" />
+</form>
+<h1></h1>
+<table class="table table-striped" border="1" cellpadding="0" cellspacing="0" width="650" height="18">
+    <tr>
+        <th>Cakes</th>
+    </tr>
+    <tr th:each="cake : ${cakes}">
+        <td>
+            <h3 th:text="${cake.name}"></h3>
+            <p th:text="'Calories: '+${cake.calories}+' kcalories'"></p>
+            <p th:text="'Price: '+${cake.price}+' rub'"></p>
+            <p th:text="'Weight:'+${cake.weight}+' g'"></p>
+            <a th:href="@{/admin/cake/{id}(id=${cake.id})}" class="btn btn-primary">More info</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

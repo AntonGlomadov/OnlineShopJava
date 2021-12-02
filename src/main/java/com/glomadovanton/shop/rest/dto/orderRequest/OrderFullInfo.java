@@ -15,6 +15,7 @@ import java.util.List;
 @Data
 public class OrderFullInfo {
 
+    private Long id;
     private String name;
     private String number;
     private Delivery delivery;
@@ -22,6 +23,6 @@ public class OrderFullInfo {
     private LocalDateTime deliveryTime;
     private Payment payment;
     private OrderStatus orderStatus;
-    private List<Pair<CakeInOrderInfo,Integer>> cakesList;
+    private List<CakeInOrderInfo> cakesList;
     private BigDecimal paymentSum;
 }

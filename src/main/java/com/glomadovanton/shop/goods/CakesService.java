@@ -8,4 +8,5 @@ public interface CakesService {
      CakeFullInf getCake(Long id);
      CakeEntity getCakeEntity(Long id);
      void addCake(CakeFullInf cake);
+     void deleteCake(Long id);
 }

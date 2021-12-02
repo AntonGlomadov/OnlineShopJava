@@ -6,14 +6,18 @@
 </head>
 
 <body>
-<h2>Order Status</h2>
-<select>
-    <option th:each="statusType : ${T(com.glomadovanton.shop.orders.OrderStatus).values()}"
-            th:value="${statusType}"
-            th:text="${statusType}"
-            th:selected="${order.orderStatus == statusType}">
-    </option>
-</select>
+<h3> Order Status</h3>
+<form action="#" th:action="@{/admin/order/change/{id}(id=${order.id})}" th:object="${status}" method="post">
+    <select id="status" name="status">
+        <option th:each="statusType : ${T(com.glomadovanton.shop.orders.OrderStatus).values()}"
+                th:value="${statusType}"
+                th:text="${statusType}"
+                th:selected="${order.orderStatus == statusType}">
+        </option>
+    </select>
+    <input type="submit" value="Submit" />
+</form>
+<h2>User Info</h2>
 <table class="table table-striped" border="1" cellpadding="0" cellspacing="0" width="650" height="18">
     <tr>
         <th>Name</th>
@@ -47,9 +51,9 @@
 
     </tr>
     <tr th:each="purchace : ${order.cakesList}">
-        <td th:text="${purchace.getKey().name}"></td>
-        <td th:text="${purchace.getKey().price}"></td>
-        <td th:text="${purchace.getValue}"></td>
+        <td th:text="${purchace.name}"></td>
+        <td th:text="${purchace.price}"></td>
+        <td th:text="${purchace.number}"></td>
     </tr>
 </table>
 <h2>Payment Info</h2>
@@ -63,5 +67,9 @@
         <td th:text="${order.paymentSum}"></td>
     </tr>
 </table>
+<h3>Delete Order Status</h3>
+<form action="#" th:action="@{/admin/order/delete/{id}(id=${order.id})}"  method="get">
+    <input type="submit" value="Delete" />
+</form>
 </body>
 </html>

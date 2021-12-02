@@ -13,4 +13,8 @@ public interface OrderService {
      List<OrdersInfoUI> getOrders();
 
      OrderFullInfo getOrder(Long id);
+
+     void changeOrderStatus(Long id, OrderStatus status);
+
+     void deleteOrder(Long id);
 }
