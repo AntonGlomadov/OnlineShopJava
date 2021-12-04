@@ -1,9 +1,11 @@
 package com.glomadovanton.shop.rest.controller;
 
 import com.glomadovanton.shop.goods.CakesService;
+import com.glomadovanton.shop.goods.State;
 import com.glomadovanton.shop.orders.OrderService;
 import com.glomadovanton.shop.rest.dto.cake.CakeFullInf;
 import com.glomadovanton.shop.rest.dto.orderRequest.ChangeInOrder;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -19,6 +21,12 @@ public class AdminController {
     public AdminController(OrderService orderService, CakesService cakesService) {
         this.orderService = orderService;
         this.cakesService = cakesService;
+    }
+
+    @GetMapping(value = "/start")
+    public ModelAndView getStart(){
+        ModelAndView maw = new ModelAndView("start");
+        return maw;
     }
 
     @GetMapping(value = "/orders")
@@ -55,16 +63,31 @@ public class AdminController {
         return maw;
     }
 
-    @GetMapping(value = "/order/edit")
-    public ModelAndView addCake(@PathVariable Long id){
+    @GetMapping(value = "/cake/edit")
+    public ModelAndView getCakeForm(){
         ModelAndView maw = new ModelAndView("cakeEditForm");
         maw.addObject("cake", new CakeFullInf());
         return maw;
     }
 
+    @PostMapping(value = "/cake/edit")
+    public RedirectView addCake(CakeFullInf cake){
+        cake.setState(State.AVAILABLE);
+        Long id = cakesService.addCake(cake);
+        return new RedirectView("/admin/cake/"+id.toString());
+    }
+
+    @GetMapping(value = "cake/{id}")
+    public ModelAndView getCakeById(@PathVariable Long id) {
+        ModelAndView maw = new ModelAndView("cake");
+        maw.addObject("cake",cakesService.getCake(id));
+        return maw;
+    }
+
     @GetMapping(value = "/cake/delete/{id}")
     public RedirectView deleteCake(@PathVariable Long id){
-        return new RedirectView("/admin/orders");
+        cakesService.deleteCake(id);
+        return new RedirectView("/admin/cakes");
     }
 
 }

@@ -48,11 +48,6 @@ public class UserController {
         return cakesService.getCake(id);
     }
 
-    @PostMapping(path = "addCake", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cake> createCake(@RequestBody @Valid CakeFullInf newCake) {
-        cakesService.addCake(newCake);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(path = "addOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

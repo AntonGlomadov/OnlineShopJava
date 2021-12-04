@@ -8,6 +8,7 @@ CREATE TABLE cake
     weight             DECIMAL,
     compositions       VARCHAR(255),
     storage_conditions VARCHAR(255),
+    state              INTEGER,
     CONSTRAINT pk_cake PRIMARY KEY (id)
 );
 

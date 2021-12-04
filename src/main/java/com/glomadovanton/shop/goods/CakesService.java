@@ -7,6 +7,6 @@ public interface CakesService {
      Cakes getCakes();
      CakeFullInf getCake(Long id);
      CakeEntity getCakeEntity(Long id);
-     void addCake(CakeFullInf cake);
+     Long addCake(CakeFullInf cake);
      void deleteCake(Long id);
 }

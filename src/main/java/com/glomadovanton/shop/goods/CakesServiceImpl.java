@@ -31,8 +31,9 @@ public class CakesServiceImpl implements CakesService {
             cake.setImage(c.getImage());
             cake.setPrice(c.getPrice());
             cake.setWeight(c.getWeight());
+            cake.setState(c.getState());
             return cake;
-        }).collect(Collectors.toList());
+        }).filter(cake -> !cake.getState().equals(State.UNAVAILABLE)).collect(Collectors.toList());
         Cakes cakes = new Cakes();
         cakes.setCakeList(cakeList);
         return cakes;
@@ -62,7 +63,7 @@ public class CakesServiceImpl implements CakesService {
     }
 
     @Override
-    public void addCake(CakeFullInf cake){
+    public Long addCake(CakeFullInf cake){
         CakeEntity cakeEntity = new CakeEntity();
         cakeEntity.setCalories(cake.getCalories());
         cakeEntity.setImage(cake.getImage());
@@ -71,11 +72,15 @@ public class CakesServiceImpl implements CakesService {
         cakeEntity.setPrice(cake.getPrice());
         cakeEntity.setWeight(cake.getWeight());
         cakeEntity.setStorageConditions(cake.getStorageConditions());
+        cakeEntity.setState(cake.getState());
         cakeRepository.save(cakeEntity);
+        return cakeEntity.getId();
     }
 
     @Override
     public void deleteCake(Long id) {
-        cakeRepository.deleteById(id);
+        CakeEntity cake = cakeRepository.getById(id);
+        cake.setState(State.UNAVAILABLE);
+        cakeRepository.flush();
     }
 }

@@ -1,6 +1,7 @@
 package com.glomadovanton.shop.rest.dto.cake;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.glomadovanton.shop.goods.State;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -43,5 +44,10 @@ public class Cake {
     @Schema(description = "Cake weight", required = true)
     @JsonProperty("weight")
     private BigDecimal weight;
+
+    @NotNull
+    @Schema(description = "Cake state", required = true)
+    @JsonProperty("state")
+    private State state;
 
 }

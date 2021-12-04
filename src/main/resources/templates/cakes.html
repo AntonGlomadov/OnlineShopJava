@@ -5,7 +5,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<form action="#" th:action="@{/admin/order/edit}"  method="get">
+<a href="/admin/start">
+    <button type="button">Back</button>
+</a>
+<h1></h1>
+<form action="#" th:action="@{/admin/cake/edit}"  method="get">
     <input type="submit" value="Edit cake" />
 </form>
 <h1></h1>
@@ -18,8 +22,11 @@
             <h3 th:text="${cake.name}"></h3>
             <p th:text="'Calories: '+${cake.calories}+' kcalories'"></p>
             <p th:text="'Price: '+${cake.price}+' rub'"></p>
+            <img th:src="'../'+${cake.image}">
             <p th:text="'Weight:'+${cake.weight}+' g'"></p>
-            <a th:href="@{/admin/cake/{id}(id=${cake.id})}" class="btn btn-primary">More info</a>
+            <a th:href="@{/admin/cake/{id}(id=${cake.id})}">
+                <button type="button">More info</button>
+            </a>
         </td>
     </tr>
 </table>

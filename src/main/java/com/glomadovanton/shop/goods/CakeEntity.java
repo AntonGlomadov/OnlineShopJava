@@ -33,6 +33,8 @@ public class CakeEntity {
 
     private String storageConditions;
 
+    private State state;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
