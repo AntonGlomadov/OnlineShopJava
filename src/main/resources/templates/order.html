@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<h3> Order Status</h3>
+<form action="#" th:action="@{/admin/order/change/{id}(id=${order.id})}" th:object="${status}" method="post">
+    <select id="status" name="status">
+        <option th:each="statusType : ${T(com.glomadovanton.shop.orders.OrderStatus).values()}"
+                th:value="${statusType}"
+                th:text="${statusType}"
+                th:selected="${order.orderStatus == statusType}">
+        </option>
+    </select>
+    <input type="submit" value="Submit" />
+</form>
+<h2>User Info</h2>
+<table class="table table-striped" border="1" cellpadding="0" cellspacing="0" width="650" height="18">
+    <tr>
+        <th>Name</th>
+        <th>Number</th>
+    </tr>
+    <tr>
+        <td th:text="${order.name}"></td>
+        <td th:text="${order.number}"></td>
+    </tr>
+</table>
+<h2>Delivery Info</h2>
+<table class="table table-striped" border="1" cellpadding="0" cellspacing="0" width="650" height="18">
+    <tr>
+        <th>Status</th>
+        <th>Address</th>
+        <th>Time</th>
+    </tr>
+    <tr>
+        <td th:text="${order.delivery}"></td>
+        <td th:text="${order.deliveryAddress}"></td>
+        <td th:text="${order.deliveryTime}"></td>
+
+    </tr>
+</table>
+<h2>Purchase Info</h2>
+<table class="table table-striped" border="1" cellpadding="0" cellspacing="0" width="650" height="18">
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Number</th>
+
+    </tr>
+    <tr th:each="purchace : ${order.cakesList}">
+        <td th:text="${purchace.name}"></td>
+        <td th:text="${purchace.price}"></td>
+        <td th:text="${purchace.number}"></td>
+    </tr>
+</table>
+<h2>Payment Info</h2>
+<table class="table table-striped" border="1" cellpadding="0" cellspacing="0" width="650" height="18">
+    <tr>
+        <th>Type</th>
+        <th>Sum</th>
+    </tr>
+    <tr>
+        <td th:text="${order.payment}"></td>
+        <td th:text="${order.paymentSum}"></td>
+    </tr>
+</table>
+<h3>Delete Order</h3>
+<form action="#" th:action="@{/admin/order/delete/{id}(id=${order.id})}"  method="get">
+    <input type="submit" value="Delete" />
+</form>
+<h1></h1>
+<a href="/admin/orders" >
+    <button type="button">Back</button>
+</a>
+</body>
+</html>

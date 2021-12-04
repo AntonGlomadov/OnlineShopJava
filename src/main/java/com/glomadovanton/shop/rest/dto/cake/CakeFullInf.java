@@ -1,6 +1,7 @@
-package com.glomadovanton.shop.rest.dto;
+package com.glomadovanton.shop.rest.dto.cake;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.glomadovanton.shop.goods.State;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -44,12 +45,17 @@ public class CakeFullInf {
     private BigDecimal weight;
 
     @NotNull
-    @Schema(description = "Cake weight", required = true)
+    @Schema(description = "Cake compositions", required = true)
     @JsonProperty("compositions")
     private String compositions;
 
     @NotNull
-    @Schema(description = "Cake weight", required = true)
+    @Schema(description = "Cake storage conditions", required = true)
     @JsonProperty("storageConditions")
     private String storageConditions;
+
+    @NotNull
+    @Schema(description = "Cake state", required = true)
+    @JsonProperty("state")
+    private State state;
 }

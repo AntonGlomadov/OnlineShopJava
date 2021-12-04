@@ -18,13 +18,13 @@ public class PurchaseEntity {
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 
-    @Setter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PROTECTED)
     @ManyToOne (fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(nullable = false)
     private CakeEntity cake;
 
-    @Setter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PROTECTED)
     @ManyToOne (fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(nullable = false)

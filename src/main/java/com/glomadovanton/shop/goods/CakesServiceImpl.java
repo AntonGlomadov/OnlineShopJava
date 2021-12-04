@@ -1,14 +1,13 @@
 package com.glomadovanton.shop.goods;
 
 import com.glomadovanton.shop.exception.CakeNotFoundException;
-import com.glomadovanton.shop.rest.dto.Cake;
-import com.glomadovanton.shop.rest.dto.CakeFullInf;
-import com.glomadovanton.shop.rest.dto.Cakes;
+import com.glomadovanton.shop.rest.dto.cake.Cake;
+import com.glomadovanton.shop.rest.dto.cake.CakeFullInf;
+import com.glomadovanton.shop.rest.dto.cake.Cakes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,8 +31,9 @@ public class CakesServiceImpl implements CakesService {
             cake.setImage(c.getImage());
             cake.setPrice(c.getPrice());
             cake.setWeight(c.getWeight());
+            cake.setState(c.getState());
             return cake;
-        }).collect(Collectors.toList());
+        }).filter(cake -> !cake.getState().equals(State.UNAVAILABLE)).collect(Collectors.toList());
         Cakes cakes = new Cakes();
         cakes.setCakeList(cakeList);
         return cakes;
@@ -55,5 +55,32 @@ public class CakesServiceImpl implements CakesService {
                     return cake;
                 })
                 .orElseThrow(() -> new CakeNotFoundException("No such cake"));
+    }
+
+    @Override
+    public CakeEntity getCakeEntity(Long id) {
+        return cakeRepository.findById(id).get();
+    }
+
+    @Override
+    public Long addCake(CakeFullInf cake){
+        CakeEntity cakeEntity = new CakeEntity();
+        cakeEntity.setCalories(cake.getCalories());
+        cakeEntity.setImage(cake.getImage());
+        cakeEntity.setCompositions(cake.getCompositions());
+        cakeEntity.setName(cake.getName());
+        cakeEntity.setPrice(cake.getPrice());
+        cakeEntity.setWeight(cake.getWeight());
+        cakeEntity.setStorageConditions(cake.getStorageConditions());
+        cakeEntity.setState(cake.getState());
+        cakeRepository.save(cakeEntity);
+        return cakeEntity.getId();
+    }
+
+    @Override
+    public void deleteCake(Long id) {
+        CakeEntity cake = cakeRepository.getById(id);
+        cake.setState(State.UNAVAILABLE);
+        cakeRepository.flush();
     }
 }
